@@ -20,6 +20,17 @@
 # production
 /build
 
+# Ignoruj pliki tymczasowe IDE
+.idea/
+*.iml
+
+# Ignoruj pliki build
+/build/
+/out/
+
+# Ignoruj pliki systemowe
+.DS_Store
+
 # misc
 .DS_Store
 *.pem
