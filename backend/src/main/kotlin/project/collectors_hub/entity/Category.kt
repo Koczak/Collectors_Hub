@@ -1,6 +1,7 @@
 package project.collectors_hub.entity
 
 import jakarta.persistence.*
+import project.collectors_hub.helper.JsonAttributeConverter
 
 @Entity
 @Table(name = "categories")
@@ -12,9 +13,9 @@ data class Category(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
 
-    @Lob
     @Column(nullable = true)
-    val attributeSchema: String,
+    @Convert(converter = JsonAttributeConverter::class)
+    val attributes: Map<String, Any>?,
 
     @OneToMany(mappedBy = "category")
     val items: List<Item>
