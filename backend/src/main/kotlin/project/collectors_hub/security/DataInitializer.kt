@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
-import project.collectors_hub.entities.User
+import project.collectors_hub.entity.User
 import project.collectors_hub.repository.UserRepository
 
 @Component
@@ -20,7 +20,10 @@ class DataInitializer(
                 val user = User(
                     username = "admin",
                     password = passwordEncoder.encode("admin"),
-                    roles = "ADMIN"
+                    email = "admin@gmail.com",
+                    roles = User.ROLE_ADMIN,
+                    collections = emptyList(),
+                    categories = emptyList()
                 )
                 userRepository.save(user)
             }
