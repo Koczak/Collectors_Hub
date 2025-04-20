@@ -7,6 +7,9 @@ import jakarta.persistence.*
 data class Collection(
 
     @Column(nullable = true)
+    val name: String,
+
+    @Column(nullable = true)
     val description: String,
 
     @ManyToOne

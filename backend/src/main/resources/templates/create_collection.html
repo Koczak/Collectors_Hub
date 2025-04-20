@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<head>
+    <title>New Collection</title>
+</head>
+<body>
+<h1>Create New Collection</h1>
+<form th:action="@{/collections}" th:method="post" th:object="${collectionForm}">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea>
+    </div>
+    <div>
+        <button type="submit">Create</button>
+    </div>
+</form>
+</body>
+</html>

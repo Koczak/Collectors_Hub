@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<head>
+  <title>Collections</title>
+</head>
+<body>
+<h1>Collections</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="collection : ${collections}">
+    <td th:text="${collection.name}"></td>
+    <td th:text="${collection.description}"></td>
+  </tr>
+  </tbody>
+</table>
+<a href="/collections/new">Create New Collection</a>
+</body>
+</html>
