@@ -19,7 +19,7 @@ data class Item(
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
-    val category: Category,
+    val category: Category?,
 
     @Column(nullable = true)
     @Convert(converter = JsonAttributeConverter::class)

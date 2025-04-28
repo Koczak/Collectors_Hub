@@ -16,6 +16,10 @@ class UserServiceImpl(
         return userRepository.getAllUsers()
     }
 
+    override fun getUserByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
+    }
+
     override fun createUser(userForm: UserForm) {
         val user = User(
             username = userForm.username,

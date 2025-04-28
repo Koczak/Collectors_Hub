@@ -15,8 +15,9 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { requests ->
                 requests
-                    .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                    .anyRequest().authenticated()
+                    .requestMatchers("/login", "/css/**", "/js/**").permitAll() // Publiczne zasoby
+                    .requestMatchers("/api/**").authenticated() // Wymagane uwierzytelnienie dla API
+                    .anyRequest().authenticated() // Wymagane uwierzytelnienie dla pozostałych zasobów
             }
             .formLogin { form ->
                 form
@@ -30,6 +31,8 @@ class SecurityConfig {
                     .logoutSuccessUrl("/login?logout")
                     .permitAll()
             }
+            .httpBasic { } // Poprawiona konfiguracja Basic Auth
+            .csrf { csrf -> csrf.disable() } // Poprawiona konfiguracja CSRF
         return http.build()
     }
 
