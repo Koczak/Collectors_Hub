@@ -3,12 +3,12 @@ package project.collectors_hub.controller.view
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 
-@Controller
-class HomeController {
-
-    @GetMapping("/")
-    fun home(): String {
-        return "home" // Nazwa widoku głównej strony
-    }
-
-}
+//@Controller
+//class HomeController {
+//
+//    @GetMapping("/")
+//    fun home(): String {
+//        return "home" // Nazwa widoku głównej strony
+//    }
+//
+//}

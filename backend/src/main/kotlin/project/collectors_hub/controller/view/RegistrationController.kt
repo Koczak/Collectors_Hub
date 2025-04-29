@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping
 import project.collectors_hub.dto.UserForm
 import project.collectors_hub.service.UserService
 
-@Controller
-@RequestMapping("/register")
-class RegistrationController(
-    private val userService: UserService
-) {
-
-    @GetMapping
-    fun showRegistrationForm(model: Model): String {
-        model.addAttribute("user", UserForm())
-        return "register"
-    }
-
-    @PostMapping
-    fun registerUser(userForm: UserForm): String {
-        userService.createUser(userForm)
-        return "redirect:/login"
-    }
-}
+//@Controller
+//@RequestMapping("/register")
+//class RegistrationController(
+//    private val userService: UserService
+//) {
+//
+//    @GetMapping
+//    fun showRegistrationForm(model: Model): String {
+//        model.addAttribute("user", UserForm())
+//        return "register"
+//    }
+//
+//    @PostMapping
+//    fun registerUser(userForm: UserForm): String {
+//        userService.createUser(userForm)
+//        return "redirect:/login"
+//    }
+//}

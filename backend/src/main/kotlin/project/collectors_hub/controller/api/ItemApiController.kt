@@ -17,14 +17,12 @@ class ItemApiController(
 
     @GetMapping
     fun getAllItemsForCurrentUser(): List<ItemProjection> {
-        // This is a placeholder. Replace with actual logic to fetch items for the current user.
         return itemService.getAllItemsForCurrentUser()
     }
 
     @PostMapping
-    fun addNewItem(@RequestBody itemDto: ItemDto): Long {
-        // This is a placeholder. Replace with actual logic to add a new item.
-        return itemService.addNewItem(itemDto)
+    fun addNewItem(@RequestBody dto: ItemDto): Long {
+        return itemService.addNewItem(dto)
     }
 
 }

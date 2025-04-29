@@ -1,9 +1,12 @@
 package project.collectors_hub.controller.api
 
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import project.collectors_hub.dto.GetAllUsersProjection
+import project.collectors_hub.dto.UserDto
 import project.collectors_hub.service.UserService
 
 @RestController
@@ -15,5 +18,10 @@ class UserApiController(
     @GetMapping
     fun getUsers(): List<GetAllUsersProjection> {
         return userService.getAllUsers()
+    }
+
+    @PostMapping
+    fun createUser(@RequestBody dto: UserDto) {
+        userService.createUser(dto)
     }
 }

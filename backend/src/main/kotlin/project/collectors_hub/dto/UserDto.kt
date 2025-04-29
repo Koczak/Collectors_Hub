@@ -1,7 +1,8 @@
 package project.collectors_hub.dto
 
 data class UserDto(
-    val id: Long,
     val username: String,
-    val email: String
+    val password: String,
+    val email: String,
+    val roles: String,
 )
