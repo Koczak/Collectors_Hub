@@ -1,9 +1,8 @@
 package project.collectors_hub.controller.api
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import project.collectors_hub.dto.CollectionProjection
+import org.springframework.web.bind.annotation.*
+import project.collectors_hub.dto.CollectionDto
+import project.collectors_hub.projection.CollectionProjection
 import project.collectors_hub.service.CollectionService
 
 
@@ -16,6 +15,11 @@ class CollectionApiController(
     @GetMapping
     fun getCollectionsForCurrentUser(): List<CollectionProjection> {
         return collectionService.getAllCollectionsForCurrentUser()
+    }
+
+    @PostMapping
+    fun createCollection(@RequestBody dto: CollectionDto): Long {
+        return collectionService.createCollection(dto)
     }
 
 }

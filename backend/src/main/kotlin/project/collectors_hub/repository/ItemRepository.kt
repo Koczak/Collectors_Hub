@@ -2,7 +2,7 @@ package project.collectors_hub.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import project.collectors_hub.dto.ItemProjection
+import project.collectors_hub.projection.ItemProjection
 import project.collectors_hub.entity.Item
 
 interface ItemRepository : JpaRepository<Item, Long> {

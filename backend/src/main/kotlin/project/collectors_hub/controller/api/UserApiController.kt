@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import project.collectors_hub.dto.GetAllUsersProjection
+import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
 import project.collectors_hub.service.UserService
 
@@ -16,7 +16,7 @@ class UserApiController(
 ) {
 
     @GetMapping
-    fun getUsers(): List<GetAllUsersProjection> {
+    fun getUsers(): List<UserProjection> {
         return userService.getAllUsers()
     }
 

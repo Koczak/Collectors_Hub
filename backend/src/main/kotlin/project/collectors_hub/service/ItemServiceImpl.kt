@@ -2,7 +2,7 @@ package project.collectors_hub.service
 
 import org.springframework.stereotype.Service
 import project.collectors_hub.dto.ItemDto
-import project.collectors_hub.dto.ItemProjection
+import project.collectors_hub.projection.ItemProjection
 import project.collectors_hub.entity.Item
 import project.collectors_hub.repository.ItemRepository
 

@@ -2,9 +2,8 @@ package project.collectors_hub.service
 
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import project.collectors_hub.dto.GetAllUsersProjection
+import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
-import project.collectors_hub.dto.UserForm
 import project.collectors_hub.entity.User
 import project.collectors_hub.repository.UserRepository
 
@@ -13,7 +12,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
 ) : UserService {
-    override fun getAllUsers(): List<GetAllUsersProjection> {
+    override fun getAllUsers(): List<UserProjection> {
         return userRepository.getAllUsers()
     }
 

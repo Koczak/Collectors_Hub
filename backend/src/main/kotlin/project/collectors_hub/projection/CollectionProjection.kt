@@ -1,4 +1,4 @@
-package project.collectors_hub.dto
+package project.collectors_hub.projection
 
 interface CollectionProjection {
     fun getId(): Long

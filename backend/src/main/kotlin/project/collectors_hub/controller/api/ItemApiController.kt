@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import project.collectors_hub.dto.ItemDto
-import project.collectors_hub.dto.ItemProjection
+import project.collectors_hub.projection.ItemProjection
 import project.collectors_hub.service.ItemService
 
 @RestController
