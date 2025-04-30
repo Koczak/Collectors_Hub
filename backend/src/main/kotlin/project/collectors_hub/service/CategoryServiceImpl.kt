@@ -6,6 +6,7 @@ import project.collectors_hub.projection.CategoryProjection
 import project.collectors_hub.entity.Category
 import project.collectors_hub.repository.CategoryRepository
 import project.collectors_hub.security.SecurityUtils
+import java.util.*
 
 @Service
 class CategoryServiceImpl(
@@ -29,5 +30,9 @@ class CategoryServiceImpl(
         )
         categoryRepository.save(category)
         return category.id
+    }
+
+    override fun getCategoryById(id: Long): Optional<Category> {
+        return categoryRepository.findById(id)
     }
 }

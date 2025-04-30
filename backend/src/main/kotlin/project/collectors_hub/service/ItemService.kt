@@ -7,4 +7,8 @@ interface ItemService {
     fun getAllItemsForCurrentUser(): List<ItemProjection>
 
     fun addNewItem(dto: ItemDto): Long
+
+    fun deleteItem(id: Long): Boolean
+
+    fun editItem(id: Long, dto: ItemDto): Boolean
 }

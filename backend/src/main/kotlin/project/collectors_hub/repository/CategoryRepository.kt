@@ -9,4 +9,8 @@ interface CategoryRepository : JpaRepository<Category, Long> {
     @Query("SELECT c.id AS id, c.name AS name, u.username AS username, c.attributes AS attributes " +
             "FROM Category c JOIN c.user u WHERE u.id = :userId")
     fun getAllCategoryProjectionsForGivenUserId(userId: Long): List<CategoryProjection>
+
+//    @Query("SELECT c.id AS id, c.name AS name, u.username AS username, c.attributes AS attributes " +
+//            "FROM Category c JOIN c.user u WHERE c.id = :id")
+//    fun getCategoryProjectionsForGivenId(id: Long): CategoryProjection?
 }

@@ -8,10 +8,10 @@ import project.collectors_hub.helper.JsonAttributeConverter
 data class Item(
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = true)
-    val description: String,
+    var description: String,
 
     @ManyToOne
     @JoinColumn(name = "collection_id", nullable = false)
@@ -19,10 +19,10 @@ data class Item(
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
-    val category: Category?,
+    var category: Category?,
 
     @Column(nullable = true)
     @Convert(converter = JsonAttributeConverter::class)
-    val attributes: Map<String, Any>?,
+    var attributes: Map<String, Any>?,
 
 ) : BaseEntity()
