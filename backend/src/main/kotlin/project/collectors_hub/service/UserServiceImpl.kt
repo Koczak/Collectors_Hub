@@ -1,5 +1,6 @@
 package project.collectors_hub.service
 
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import project.collectors_hub.projection.UserProjection
@@ -34,7 +35,7 @@ class UserServiceImpl(
     }
 
     override fun deleteUser(id: Long): Boolean {
-        val user = userRepository.findById(id).orElseThrow { throw IllegalArgumentException("User with id $id not found") }
+        val user = userRepository.findById(id).orElseThrow { throw EntityNotFoundException("User with id $id not found") }
         if (user.roles == User.ROLE_ADMIN) {
             throw IllegalArgumentException("Cannot delete admin user")
         }
@@ -43,7 +44,7 @@ class UserServiceImpl(
     }
 
     override fun editUser(id: Long, dto: UserDto): Boolean {
-        val user = userRepository.findById(id).orElseThrow { throw IllegalArgumentException("User with id $id not found") }
+        val user = userRepository.findById(id).orElseThrow { throw EntityNotFoundException("User with id $id not found") }
         user.username = dto.username
         user.email = dto.email
         user.password = passwordEncoder.encode(dto.password)

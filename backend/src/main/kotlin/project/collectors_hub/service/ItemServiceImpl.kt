@@ -1,5 +1,6 @@
 package project.collectors_hub.service
 
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import project.collectors_hub.dto.ItemDto
 import project.collectors_hub.projection.ItemProjection
@@ -24,7 +25,7 @@ class ItemServiceImpl(
 
     override fun addNewItem(dto: ItemDto): Long {
         val collection = collectionService.findCollectionById(dto.collectionId)
-            ?: throw IllegalArgumentException("Collection with id ${dto.collectionId} not found")
+            ?: throw EntityNotFoundException("Collection with id ${dto.collectionId} not found")
 
         val item = Item(
             name = dto.name,
@@ -39,21 +40,21 @@ class ItemServiceImpl(
 
     override fun deleteItem(id: Long): Boolean {
         if (!itemRepository.existsById(id)) {
-            throw IllegalArgumentException("Item with id $id not found")
+            throw EntityNotFoundException("Item with id $id not found")
         }
         itemRepository.deleteById(id)
         return true
     }
 
     override fun editItem(id: Long, dto: ItemDto): Boolean {
-        val item = itemRepository.findById(id).orElseThrow { IllegalArgumentException("Item with id $id not found") }
+        val item = itemRepository.findById(id).orElseThrow { EntityNotFoundException("Item with id $id not found") }
 
         when {
             dto.categoryId == null -> {
                 item.category = null
             }
             dto.categoryId != -1L -> {
-                val category = categoryService.getCategoryById(dto.categoryId).orElseThrow { IllegalArgumentException("Category with id ${dto.categoryId} not found") }
+                val category = categoryService.getCategoryById(dto.categoryId).orElseThrow { EntityNotFoundException("Category with id ${dto.categoryId} not found") }
                 item.category = category
             }
         }

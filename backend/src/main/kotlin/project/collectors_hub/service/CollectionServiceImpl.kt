@@ -1,5 +1,6 @@
 package project.collectors_hub.service
 
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import project.collectors_hub.dto.CollectionDto
@@ -16,13 +17,13 @@ class CollectionServiceImpl(
 
     override fun getAllCollectionsForCurrentUser(): List<CollectionProjection> {
         val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
+        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
         return collectionRepository.getAllCollectionsForGivenUserId(user.id)
     }
 
     override fun createCollection(dto: CollectionDto): Long {
         val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
+        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
         val collection = Collection(
             name = dto.name,
             description = dto.description,

@@ -1,5 +1,6 @@
 package project.collectors_hub.service
 
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import project.collectors_hub.dto.CategoryDto
@@ -16,13 +17,13 @@ class CategoryServiceImpl(
 ) : CategoryService {
     override fun getAllCategoriesForCurrentUser(): List<CategoryProjection> {
         val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
+        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
         return categoryRepository.getAllCategoryProjectionsForGivenUserId(user.id)
     }
 
     override fun createCategory(dto: CategoryDto): Long {
         val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
+        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
         val category = Category(
             name = dto.name,
             user = user,
@@ -39,14 +40,14 @@ class CategoryServiceImpl(
 
     override fun deleteCategoryById(id: Long): Boolean {
         if (!categoryRepository.existsById(id)) {
-            throw IllegalArgumentException("Category with id $id not found")
+            throw EntityNotFoundException("Category with id $id not found")
         }
         categoryRepository.deleteById(id)
         return true
     }
 
     override fun editCategory(id: Long, dto: CategoryDto): Boolean {
-        val category = categoryRepository.findById(id).orElseThrow { IllegalArgumentException("Category with id $id not found") }
+        val category = categoryRepository.findById(id).orElseThrow { EntityNotFoundException("Category with id $id not found") }
         category.name = dto.name
         category.attributes = dto.attributes
         categoryRepository.save(category)
