@@ -7,7 +7,7 @@ import project.collectors_hub.helper.JsonAttributeConverter
 @Table(name = "categories")
 data class Category(
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -15,9 +15,16 @@ data class Category(
 
     @Column(nullable = true)
     @Convert(converter = JsonAttributeConverter::class)
-    val attributes: Map<String, Any>?,
+    var attributes: Map<String, Any>?,
 
     @OneToMany(mappedBy = "category")
     val items: List<Item>
 
-) : BaseEntity()
+) : BaseEntity() {
+    @PreRemove
+    fun removeCategoryFromItems() {
+        for (item in items) {
+            item.category = null
+        }
+    }
+}

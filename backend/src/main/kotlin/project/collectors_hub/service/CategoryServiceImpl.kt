@@ -35,4 +35,20 @@ class CategoryServiceImpl(
     override fun getCategoryById(id: Long): Optional<Category> {
         return categoryRepository.findById(id)
     }
+
+    override fun deleteCategoryById(id: Long): Boolean {
+        if (!categoryRepository.existsById(id)) {
+            throw IllegalArgumentException("Category with id $id not found")
+        }
+        categoryRepository.deleteById(id)
+        return true
+    }
+
+    override fun editCategory(id: Long, dto: CategoryDto): Boolean {
+        val category = categoryRepository.findById(id).orElseThrow { IllegalArgumentException("Category with id $id not found") }
+        category.name = dto.name
+        category.attributes = dto.attributes
+        categoryRepository.save(category)
+        return true
+    }
 }

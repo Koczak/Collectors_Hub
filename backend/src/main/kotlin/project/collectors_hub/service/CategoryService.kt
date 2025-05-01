@@ -9,4 +9,6 @@ interface CategoryService {
     fun getAllCategoriesForCurrentUser(): List<CategoryProjection>
     fun createCategory(dto: CategoryDto): Long
     fun getCategoryById(id: Long): Optional<Category>
+    fun deleteCategoryById(id: Long): Boolean
+    fun editCategory(id: Long, dto: CategoryDto): Boolean
 }
