@@ -13,4 +13,8 @@ interface UserService {
 //    fun createUser(userForm: UserForm)
 
     fun createUser(dto: UserDto)
+
+    fun deleteUser(id: Long): Boolean
+
+    fun editUser(id: Long, dto: UserDto): Boolean
 }

@@ -32,6 +32,24 @@ class UserServiceImpl(
         userRepository.save(user)
     }
 
+    override fun deleteUser(id: Long): Boolean {
+        val user = userRepository.findById(id).orElseThrow { throw IllegalArgumentException("User with id $id not found") }
+        if (user.roles == User.ROLE_ADMIN) {
+            throw IllegalArgumentException("Cannot delete admin user")
+        }
+        userRepository.delete(user)
+        return true
+    }
+
+    override fun editUser(id: Long, dto: UserDto): Boolean {
+        val user = userRepository.findById(id).orElseThrow { throw IllegalArgumentException("User with id $id not found") }
+        user.username = dto.username
+        user.email = dto.email
+        user.password = passwordEncoder.encode(dto.password)
+        userRepository.save(user)
+        return true
+    }
+
 //    override fun createUser(userForm: UserForm) {
 //        val user = User(
 //            username = userForm.username,

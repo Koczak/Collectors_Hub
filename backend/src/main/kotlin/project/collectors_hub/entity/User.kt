@@ -7,13 +7,13 @@ import jakarta.persistence.*
 data class User(
 
     @Column(nullable = false, unique = true)
-    val username: String,
+    var username: String,
 
     @Column(nullable = false)
-    val password: String,
+    var password: String,
 
     @Column(nullable = false)
-    val email: String,
+    var email: String,
 
     @Column(nullable = false)
     val roles: String,
