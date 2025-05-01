@@ -10,8 +10,8 @@ import project.collectors_hub.repository.UserRepository
 class CollectorsHubUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userRepository.findByUsername(username)
-            ?: throw UsernameNotFoundException("Użytkownik o nazwie $username nie został znaleziony")
+        val user = userRepository.findByUsername(username).orElseThrow { UsernameNotFoundException("User $username not found") }
+
 
         return org.springframework.security.core.userdetails.User.builder()
             .username(user.username)

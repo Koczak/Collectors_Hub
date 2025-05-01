@@ -1,5 +1,6 @@
 package project.collectors_hub.service
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import project.collectors_hub.dto.CategoryDto
 import project.collectors_hub.projection.CategoryProjection
@@ -14,14 +15,14 @@ class CategoryServiceImpl(
     private val userService: UserService
 ) : CategoryService {
     override fun getAllCategoriesForCurrentUser(): List<CategoryProjection> {
-        val username = SecurityUtils.getCurrentUsername()!!
-        val user = userService.getUserByUsername(username)!!
+        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
+        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
         return categoryRepository.getAllCategoryProjectionsForGivenUserId(user.id)
     }
 
     override fun createCategory(dto: CategoryDto): Long {
-        val username = SecurityUtils.getCurrentUsername()!!
-        val user = userService.getUserByUsername(username)!!
+        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
+        val user = userService.getUserByUsername(username).orElseThrow { IllegalArgumentException("User $username not found") }
         val category = Category(
             name = dto.name,
             user = user,

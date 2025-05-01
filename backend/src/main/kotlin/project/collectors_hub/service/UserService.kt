@@ -3,12 +3,13 @@ package project.collectors_hub.service
 import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
 import project.collectors_hub.entity.User
+import java.util.Optional
 
 
 interface UserService {
     fun getAllUsers(): List<UserProjection>
 
-    fun getUserByUsername(username: String): User?
+    fun getUserByUsername(username: String): Optional<User>
 
 //    fun createUser(userForm: UserForm)
 

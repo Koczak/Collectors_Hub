@@ -6,6 +6,7 @@ import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
 import project.collectors_hub.entity.User
 import project.collectors_hub.repository.UserRepository
+import java.util.*
 
 @Service
 class UserServiceImpl(
@@ -16,7 +17,7 @@ class UserServiceImpl(
         return userRepository.getAllUsers()
     }
 
-    override fun getUserByUsername(username: String): User? {
+    override fun getUserByUsername(username: String): Optional<User> {
         return userRepository.findByUsername(username)
     }
 
