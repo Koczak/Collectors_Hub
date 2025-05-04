@@ -1,5 +1,7 @@
 package project.collectors_hub.controller.api
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -14,11 +16,11 @@ class AuthController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestParam username: String, @RequestParam password: String): Map<String, String> {
+    fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<Map<String, String>> {
         val authentication: Authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(username, password)
         )
         val token = jwtTokenProvider.createToken(authentication.name)
-        return mapOf("token" to token)
+        return ResponseEntity(mapOf("token" to token), HttpStatus.OK)
     }
 }

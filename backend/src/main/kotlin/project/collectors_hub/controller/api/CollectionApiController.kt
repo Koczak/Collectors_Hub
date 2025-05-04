@@ -1,5 +1,7 @@
 package project.collectors_hub.controller.api
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import project.collectors_hub.dto.CollectionDto
 import project.collectors_hub.projection.CollectionProjection
@@ -13,13 +15,13 @@ class CollectionApiController(
 ) {
 
     @GetMapping
-    fun getCollectionsForCurrentUser(): List<CollectionProjection> {
-        return collectionService.getAllCollectionsForCurrentUser()
+    fun getCollectionsForCurrentUser(): ResponseEntity<List<CollectionProjection>> {
+        return ResponseEntity(collectionService.getAllCollectionsForCurrentUser(), HttpStatus.OK)
     }
 
     @PostMapping
-    fun createCollection(@RequestBody dto: CollectionDto): Long {
-        return collectionService.createCollection(dto)
+    fun createCollection(@RequestBody dto: CollectionDto): ResponseEntity<Long> {
+        return ResponseEntity(collectionService.createCollection(dto), HttpStatus.CREATED)
     }
 
 }

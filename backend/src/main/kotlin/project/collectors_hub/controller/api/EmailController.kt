@@ -1,5 +1,7 @@
 package project.collectors_hub.controller.api
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -17,9 +19,9 @@ class EmailController(
         @RequestParam to: String,
         @RequestParam subject: String,
         @RequestParam text: String
-    ): String {
+    ): ResponseEntity<String> {
         emailService.sendEmail(to, subject, text)
-        return "Email sent successfully to $to"
+        return ResponseEntity("Email sent successfully to $to", HttpStatus.OK)
     }
 
 }

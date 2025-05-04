@@ -1,5 +1,7 @@
 package project.collectors_hub.controller.api
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
@@ -12,22 +14,25 @@ class UserApiController(
 ) {
 
     @GetMapping
-    fun getUsers(): List<UserProjection> {
-        return userService.getAllUsers()
+    fun getUsers(): ResponseEntity<List<UserProjection>> {
+        return ResponseEntity(userService.getAllUsers(), HttpStatus.OK)
     }
 
     @PostMapping
-    fun createUser(@RequestBody dto: UserDto) {
+    fun createUser(@RequestBody dto: UserDto): ResponseEntity<Unit> {
         userService.createUser(dto)
+        return ResponseEntity(HttpStatus.CREATED)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Long): Boolean {
-        return userService.deleteUser(id)
+    fun deleteUser(@PathVariable id: Long): ResponseEntity<Unit> {
+        userService.deleteUser(id)
+        return ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
     @PutMapping("/{id}")
-    fun editUser(@PathVariable id: Long, @RequestBody dto: UserDto): Boolean {
-        return userService.editUser(id, dto)
+    fun editUser(@PathVariable id: Long, @RequestBody dto: UserDto): ResponseEntity<Unit> {
+        userService.editUser(id, dto)
+        return ResponseEntity(HttpStatus.NO_CONTENT)
     }
 }
