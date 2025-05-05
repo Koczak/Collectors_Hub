@@ -83,16 +83,29 @@ class ItemServiceImpl(
         when {
             dto.categoryId == null -> {
                 item.category = null
+                item.attributes = null
             }
             dto.categoryId != -1L -> {
                 val category = categoryService.getCategoryById(dto.categoryId).orElseThrow { EntityNotFoundException("Category with id ${dto.categoryId} not found") }
                 item.category = category
+                val categoryAttributes = category.attributes
+                val itemAttributes = dto.attributes?.keys
+                if (categoryAttributes != null && itemAttributes != null) {
+                    for (attribute in itemAttributes) {
+                        if (!categoryAttributes.contains(attribute)) {
+                            throw EntityNotFoundException("Attribute $attribute does not exist in the category")
+                        }
+                    }
+                } else {
+                    throw IllegalArgumentException("Category attributes or item attributes are null")
+                }
+                item.attributes = dto.attributes
             }
         }
 
         item.name = dto.name
         item.description = dto.description
-        item.attributes = null
+
         itemRepository.save(item)
         return true
     }
