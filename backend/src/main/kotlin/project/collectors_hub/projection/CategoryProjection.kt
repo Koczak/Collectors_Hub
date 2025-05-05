@@ -4,5 +4,5 @@ interface CategoryProjection {
     fun getId(): Long
     fun getName(): String
     fun getUsername(): String
-    fun getAttributes(): Map<String, Any>?
+    fun getAttributes(): Set<String>?
 }

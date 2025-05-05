@@ -1,7 +1,7 @@
 package project.collectors_hub.entity
 
 import jakarta.persistence.*
-import project.collectors_hub.helper.JsonAttributeConverter
+import project.collectors_hub.helper.MapStringAnyJsonAttributeConverter
 
 @Entity
 @Table(name = "items")
@@ -22,7 +22,7 @@ data class Item(
     var category: Category?,
 
     @Column(nullable = true)
-    @Convert(converter = JsonAttributeConverter::class)
+    @Convert(converter = MapStringAnyJsonAttributeConverter::class)
     var attributes: Map<String, Any>?,
 
 ) : BaseEntity()

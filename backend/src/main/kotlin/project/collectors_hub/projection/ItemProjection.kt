@@ -5,4 +5,5 @@ interface ItemProjection {
     fun getName(): String
     fun getDescription(): String
     fun getCategoryName(): String?
+    fun getAttributes(): Map<String, Any>?
 }

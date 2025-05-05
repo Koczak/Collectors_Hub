@@ -6,7 +6,7 @@ import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 
 @Converter
-class JsonAttributeConverter : AttributeConverter<Map<String, Any>, String> {
+class MapStringAnyJsonAttributeConverter : AttributeConverter<Map<String, Any>, String> {
 
     private val objectMapper = jacksonObjectMapper()
 

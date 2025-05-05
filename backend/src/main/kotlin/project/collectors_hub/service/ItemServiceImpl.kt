@@ -27,15 +27,46 @@ class ItemServiceImpl(
         val collection = collectionService.findCollectionById(dto.collectionId)
             ?: throw EntityNotFoundException("Collection with id ${dto.collectionId} not found")
 
-        val item = Item(
-            name = dto.name,
-            description = dto.description,
-            collection = collection,
-            category = null,
-            attributes = null
-        )
-        itemRepository.save(item)
-        return item.id
+        if (dto.categoryId != null && dto.categoryId != -1L) {
+            val category = categoryService.getCategoryById(dto.categoryId).orElseThrow { EntityNotFoundException("Category with id ${dto.categoryId} not found") }
+
+            if (category.user.id != collection.user.id) {
+                throw EntityNotFoundException("Category with id ${dto.categoryId} does not belong to the user")
+            }
+
+            val categoryAttributes = category.attributes
+            val itemAttributes = dto.attributes?.keys
+
+            if (categoryAttributes != null && itemAttributes != null) {
+                for (attribute in itemAttributes) {
+                    if (!categoryAttributes.contains(attribute)) {
+                        throw EntityNotFoundException("Attribute $attribute does not exist in the category")
+                    }
+                }
+            } else {
+                throw IllegalArgumentException("Category attributes or item attributes are null")
+            }
+
+            val item = Item(
+                name = dto.name,
+                description = dto.description,
+                collection = collection,
+                category = category,
+                attributes = dto.attributes
+            )
+            itemRepository.save(item)
+            return item.id
+        } else {
+            val item = Item(
+                name = dto.name,
+                description = dto.description,
+                collection = collection,
+                category = null,
+                attributes = null
+            )
+            itemRepository.save(item)
+            return item.id
+        }
     }
 
     override fun deleteItem(id: Long): Boolean {

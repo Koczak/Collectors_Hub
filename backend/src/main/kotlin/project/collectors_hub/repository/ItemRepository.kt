@@ -11,7 +11,8 @@ interface ItemRepository : JpaRepository<Item, Long> {
                i.id AS id,
                i.name AS name, 
                i.description AS description, 
-               c.name AS categoryName
+               c.name AS categoryName,
+               i.attributes AS attributes
         FROM Item i
         LEFT JOIN i.category c
         WHERE i.collection.id = :collectionId
@@ -23,7 +24,8 @@ interface ItemRepository : JpaRepository<Item, Long> {
                i.id AS id,
                i.name AS name, 
                i.description AS description, 
-               c.name AS categoryName
+               c.name AS categoryName,
+               i.attributes AS attributes
         FROM Item i
         LEFT JOIN i.category c
         WHERE i.id = :id

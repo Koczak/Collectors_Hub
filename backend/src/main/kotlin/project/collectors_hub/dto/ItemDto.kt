@@ -5,4 +5,5 @@ data class ItemDto(
     val description: String = "",
     val categoryId: Long? = -1,
     val collectionId: Long = 0,
+    val attributes: Map<String, Any>? = null
 )
