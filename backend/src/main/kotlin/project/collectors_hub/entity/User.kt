@@ -29,6 +29,8 @@ data class User(
         const val ROLE_ADMIN = "ADMIN"
         const val ROLE_USER = "USER"
     }
+
+    fun isAdmin() = roles == ROLE_ADMIN
 }
 
 

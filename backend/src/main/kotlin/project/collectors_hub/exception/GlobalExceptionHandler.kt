@@ -20,6 +20,11 @@ class GlobalExceptionHandler {
         return ResponseEntity(ex.message, HttpStatus.NOT_FOUND)
     }
 
+    @ExceptionHandler(PermissionDeniedException::class)
+    fun handlePermissionDeniedException(ex: PermissionDeniedException): ResponseEntity<String> {
+        return ResponseEntity(ex.message, HttpStatus.FORBIDDEN)
+    }
+
     @ExceptionHandler(UsernameNotFoundException::class)
     fun handleUsernameNotFoundException(ex: UsernameNotFoundException): ResponseEntity<String> {
         return ResponseEntity(ex.message, HttpStatus.NOT_FOUND)
