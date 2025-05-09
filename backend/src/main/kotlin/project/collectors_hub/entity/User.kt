@@ -22,7 +22,10 @@ data class User(
     val collections: List<Collection>,
 
     @OneToMany(mappedBy="user")
-    val categories: List<Category>
+    val categories: List<Category>,
+
+    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val friends: List<Friend> = mutableListOf()
 
 ) : BaseEntity() {
     companion object {

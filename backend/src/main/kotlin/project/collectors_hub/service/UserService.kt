@@ -9,6 +9,8 @@ import java.util.Optional
 interface UserService {
     fun getAllUsers(): List<UserProjection>
 
+    fun getCurrentUser(): Optional<User>
+
     fun getUserByUsername(username: String): Optional<User>
 
 //    fun createUser(userForm: UserForm)

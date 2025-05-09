@@ -21,6 +21,11 @@ class UserServiceImpl(
         return userRepository.getAllUsers()
     }
 
+    override fun getCurrentUser(): Optional<User> {
+        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
+        return userRepository.findByUsername(username)
+    }
+
     override fun getUserByUsername(username: String): Optional<User> {
         return userRepository.findByUsername(username)
     }

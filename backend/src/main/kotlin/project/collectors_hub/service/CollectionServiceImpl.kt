@@ -16,14 +16,12 @@ class CollectionServiceImpl(
 ) : CollectionService {
 
     override fun getAllCollectionsForCurrentUser(): List<CollectionProjection> {
-        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
+        val user = userService.getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
         return collectionRepository.getAllCollectionsForGivenUserId(user.id)
     }
 
     override fun createCollection(dto: CollectionDto): Long {
-        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val user = userService.getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
+        val user = userService.getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
         val collection = Collection(
             name = dto.name,
             description = dto.description,
