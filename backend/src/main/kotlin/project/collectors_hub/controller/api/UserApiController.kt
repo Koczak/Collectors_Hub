@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
+import project.collectors_hub.projection.UserFriendProjection
 import project.collectors_hub.service.UserService
 
 @RestController
@@ -35,4 +36,10 @@ class UserApiController(
         userService.editUser(id, dto)
         return ResponseEntity(HttpStatus.NO_CONTENT)
     }
+
+    @GetMapping("/friends")
+    fun getAllFriendsForCurrentUser(): ResponseEntity<List<UserFriendProjection>> {
+        return ResponseEntity(userService.getAllFriendsForCurrentUser(), HttpStatus.OK)
+    }
+
 }

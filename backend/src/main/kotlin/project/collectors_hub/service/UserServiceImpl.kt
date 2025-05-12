@@ -8,6 +8,7 @@ import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
 import project.collectors_hub.entity.User
 import project.collectors_hub.exception.PermissionDeniedException
+import project.collectors_hub.projection.UserFriendProjection
 import project.collectors_hub.repository.UserRepository
 import project.collectors_hub.security.SecurityUtils
 import java.util.*
@@ -77,6 +78,11 @@ class UserServiceImpl(
         }
 
         return true
+    }
+
+    override fun getAllFriendsForCurrentUser(): List<UserFriendProjection> {
+        val user = getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
+        return userRepository.getAllFriendsForGivenUserId(user.id)
     }
 
 //    override fun createUser(userForm: UserForm) {
