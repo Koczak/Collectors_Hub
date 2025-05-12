@@ -31,8 +31,8 @@ class FriendServiceImpl(
             status = Friend.STATUS_PENDING
         )
         val savedFriendRequest = friendRepository.save(friendRequest)
-        val confirmationLink = "http://localhost:8080/api/friends/confirm?invitationId=${savedFriendRequest.id}"
-        emailService.sendEmail(sender.email, "Friend Request", "User ${sender.username} has sent you a friend request. Confirm it here: $confirmationLink")
+        val confirmationLink = "http://localhost:8080/api/friends/confirm/${savedFriendRequest.id}"
+        emailService.sendEmail(receiver.email, "Friend Request", "User ${sender.username} has sent you a friend request. Confirm it here: $confirmationLink")
         return true
     }
 

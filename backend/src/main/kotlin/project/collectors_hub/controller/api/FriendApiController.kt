@@ -17,9 +17,9 @@ class FriendApiController(
         return ResponseEntity(HttpStatus.ACCEPTED)
     }
 
-    @PostMapping("/invite/{email}")
-    fun sendFriendRequest(@PathVariable email: String): ResponseEntity<Unit> {
-        friendService.sendFriendRequest(email)
+    @PostMapping("/invite/{username}")
+    fun sendFriendRequest(@PathVariable username: String): ResponseEntity<Unit> {
+        friendService.sendFriendRequest(username)
         return ResponseEntity(HttpStatus.CREATED)
     }
 
