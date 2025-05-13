@@ -19,6 +19,7 @@ class SecurityConfig {
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers("/api/auth/login", "/public/**", "/api/friends/confirm/**").permitAll() // Publiczne endpointy
+                    .requestMatchers("/api/users").permitAll()
                     .requestMatchers("/api/**").authenticated() // Endpointy wymagające uwierzytelnienia
                     .anyRequest().authenticated()
             }

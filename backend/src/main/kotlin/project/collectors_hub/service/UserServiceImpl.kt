@@ -8,7 +8,6 @@ import project.collectors_hub.projection.UserProjection
 import project.collectors_hub.dto.UserDto
 import project.collectors_hub.entity.User
 import project.collectors_hub.exception.PermissionDeniedException
-import project.collectors_hub.projection.UserFriendProjection
 import project.collectors_hub.repository.UserRepository
 import project.collectors_hub.security.SecurityUtils
 import java.util.*
@@ -36,21 +35,15 @@ class UserServiceImpl(
     }
 
     override fun createUser(dto: UserDto) {
-        val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
-        val currentUser = getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
-        if (currentUser.isAdmin()) {
-            val user = User(
-                username = dto.username,
-                email = dto.email,
-                password = passwordEncoder.encode(dto.password),
-                roles = dto.roles,
-                collections = emptyList(),
-                categories = emptyList()
-            )
-            userRepository.save(user)
-        } else {
-            throw PermissionDeniedException("Only admin can create new users")
-        }
+        val user = User(
+            username = dto.username,
+            email = dto.email,
+            password = passwordEncoder.encode(dto.password),
+            roles = dto.roles,
+            collections = emptyList(),
+            categories = emptyList()
+        )
+        userRepository.save(user)
     }
 
     override fun deleteUser(id: Long): Boolean {
