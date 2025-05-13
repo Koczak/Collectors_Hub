@@ -36,10 +36,4 @@ class UserApiController(
         userService.editUser(id, dto)
         return ResponseEntity(HttpStatus.NO_CONTENT)
     }
-
-    @GetMapping("/friends")
-    fun getAllFriendsForCurrentUser(): ResponseEntity<List<UserFriendProjection>> {
-        return ResponseEntity(userService.getAllFriendsForCurrentUser(), HttpStatus.OK)
-    }
-
 }

@@ -7,6 +7,7 @@ import project.collectors_hub.entity.Collection
 interface CollectionService {
 
     fun getAllCollectionsForCurrentUser(): List<CollectionProjection>
+    fun getAllCollectionsForGivenUsername(username: String): List<CollectionProjection>
 //    fun createCollection(collectionForm: CollectionForm): Long
     fun createCollection(dto: CollectionDto): Long
     fun findCollectionById(id: Long): Collection?

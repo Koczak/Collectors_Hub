@@ -20,6 +20,13 @@ class CollectionServiceImpl(
         return collectionRepository.getAllCollectionsForGivenUserId(user.id)
     }
 
+    override fun getAllCollectionsForGivenUsername(username: String): List<CollectionProjection> {
+        if (!userService.existsByUsername(username)) {
+            throw UsernameNotFoundException("User with username $username not found")
+        }
+        return collectionRepository.getAllCollectionsForGivenUsername(username)
+    }
+
     override fun createCollection(dto: CollectionDto): Long {
         val user = userService.getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
         val collection = Collection(

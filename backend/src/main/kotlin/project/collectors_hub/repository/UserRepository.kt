@@ -10,18 +10,9 @@ import java.util.*
 interface UserRepository : JpaRepository<User, Long> {
     fun findByUsername(username: String): Optional<User>
 
+    fun existsByUsername(username: String): Boolean
+
     @Query("SELECT username, email FROM Users", nativeQuery = true)
     fun getAllUsers(): List<UserProjection>
-
-    @Query("""
-    SELECT
-        f.username AS friendUsername, 
-        f.email AS friendEmail
-    FROM Friend fr
-    JOIN fr.friend f
-    WHERE fr.user.id = :userId AND fr.status = 'ACCEPTED'
-    """
-    )
-    fun getAllFriendsForGivenUserId(userId: Long): List<UserFriendProjection>
 
 }

@@ -4,13 +4,16 @@ import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import project.collectors_hub.entity.Friend
+import project.collectors_hub.projection.CollectionProjection
+import project.collectors_hub.projection.UserFriendProjection
 import project.collectors_hub.repository.FriendRepository
 
 @Service
 class FriendServiceImpl(
     private val friendRepository: FriendRepository,
     private val userService: UserService,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val collectionService: CollectionService
 ) : FriendService {
 
     @Transactional
@@ -61,6 +64,24 @@ class FriendServiceImpl(
         friendRequest.status = Friend.STATUS_REJECTED
         friendRepository.save(friendRequest)
         return true
+    }
+
+    override fun getAllFriendsForCurrentUser(): List<UserFriendProjection> {
+        val user = userService.getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
+        return friendRepository.getAllFriendsForGivenUserId(user.id)
+    }
+
+    override fun getAllCollectionsForFriend(friendUsername: String): List<CollectionProjection> {
+        val user = userService.getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
+//        if (!user.friends.map { it.friend.username }.contains(friendUsername)) {
+//            throw IllegalArgumentException("User $friendUsername is not current user's friend")
+//        }
+        val friend = user.friends.firstOrNull { it.friend.username == friendUsername }
+            ?: throw EntityNotFoundException("Friend with username $friendUsername not found")
+        if (friend.status != Friend.STATUS_ACCEPTED) {
+            throw IllegalArgumentException("User $friendUsername is not current user's friend")
+        }
+        return collectionService.getAllCollectionsForGivenUsername(friendUsername)
     }
 
 }

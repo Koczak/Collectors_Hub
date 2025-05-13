@@ -14,6 +14,8 @@ interface UserService {
 
     fun getUserByUsername(username: String): Optional<User>
 
+    fun existsByUsername(username: String): Boolean
+
 //    fun createUser(userForm: UserForm)
 
     fun createUser(dto: UserDto)
@@ -21,6 +23,4 @@ interface UserService {
     fun deleteUser(id: Long): Boolean
 
     fun editUser(id: Long, dto: UserDto): Boolean
-
-    fun getAllFriendsForCurrentUser(): List<UserFriendProjection>
 }

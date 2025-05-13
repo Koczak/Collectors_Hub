@@ -31,6 +31,10 @@ class UserServiceImpl(
         return userRepository.findByUsername(username)
     }
 
+    override fun existsByUsername(username: String): Boolean {
+        return userRepository.existsByUsername(username)
+    }
+
     override fun createUser(dto: UserDto) {
         val username = SecurityUtils.getCurrentUsername() ?: throw UsernameNotFoundException("User not authenticated")
         val currentUser = getUserByUsername(username).orElseThrow { EntityNotFoundException("User $username not found") }
@@ -78,11 +82,6 @@ class UserServiceImpl(
         }
 
         return true
-    }
-
-    override fun getAllFriendsForCurrentUser(): List<UserFriendProjection> {
-        val user = getCurrentUser().orElseThrow { EntityNotFoundException("Current user not found") }
-        return userRepository.getAllFriendsForGivenUserId(user.id)
     }
 
 //    override fun createUser(userForm: UserForm) {

@@ -3,6 +3,8 @@ package project.collectors_hub.controller.api
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import project.collectors_hub.projection.CollectionProjection
+import project.collectors_hub.projection.UserFriendProjection
 import project.collectors_hub.service.FriendService
 
 @RestController
@@ -27,5 +29,15 @@ class FriendApiController(
     fun rejectFriendRequest(@PathVariable invitationId: Long): ResponseEntity<Unit> {
         friendService.rejectFriendRequest(invitationId)
         return ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @GetMapping
+    fun getAllFriendsForCurrentUser(): ResponseEntity<List<UserFriendProjection>> {
+        return ResponseEntity(friendService.getAllFriendsForCurrentUser(), HttpStatus.OK)
+    }
+
+    @GetMapping("/collections/{username}")
+    fun getAllCollectionsOfGivenFriend(@PathVariable username: String): ResponseEntity<List<CollectionProjection>> {
+        return ResponseEntity(friendService.getAllCollectionsForFriend(username), HttpStatus.OK)
     }
 }
