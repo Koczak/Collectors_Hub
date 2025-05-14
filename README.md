@@ -18,8 +18,6 @@ POST /api/auth/login
 | `username`  | `string` | **Required**. Your username |
 | `password`  | `string` | **Required**. Your password |
 
-**JWT Token Authentication is Required**
-
 Authenticates the user and returns a JWT token.
 
 **Response:**
@@ -515,8 +513,6 @@ Sends a friend request to the specified user.
 ```http
 GET /api/friends/confirm/{invitationId}
 ```
-
-**JWT Token Authentication is Required**
 
 | Path Variable    | Type   | Description                     |
 |------------------|--------|---------------------------------|
