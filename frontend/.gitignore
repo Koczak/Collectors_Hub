@@ -20,20 +20,6 @@
 # production
 /build
 
-# Ignoruj pliki tymczasowe IDE
-.idea/
-*.iml
-
-# Ignoruj pliki build
-/build/
-/out/
-
-backend/.gradle
-backend/build
-
-# Ignoruj pliki systemowe
-.DS_Store
-
 # misc
 .DS_Store
 *.pem
@@ -53,5 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-backend/.gradle/buildOutputCleanup/cache.properties
-backend/.gradle/buildOutputCleanup/cache.properties
