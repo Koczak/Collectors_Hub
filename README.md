@@ -1,18 +1,16 @@
 
 # Collectors Hub
 
-
-
-## API Reference
-
-### Authentication
-
-#### Initiate
+## Initiate
 
 ./gradlew clean build 
 
 
 docker-compose up --build
+
+## API Reference
+
+### Authentication
 
 #### Login
 
