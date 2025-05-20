@@ -1,10 +1,8 @@
-
 # Collectors Hub
 
 ## Initiate
 
-./gradlew clean build 
-
+./gradlew clean build
 
 docker-compose up --build
 
@@ -18,18 +16,38 @@ docker-compose up --build
 POST /api/auth/login
 ```
 
-| Parameter   | Type     | Description                 |
-|-------------|----------|-----------------------------|
-| `username`  | `string` | **Required**. Your username |
-| `password`  | `string` | **Required**. Your password |
+| Parameter  | Type     | Description                 |
+| ---------- | -------- | --------------------------- |
+| `username` | `string` | **Required**. Your username |
+| `password` | `string` | **Required**. Your password |
 
-Authenticates the user and returns a JWT token.
+Authenticates the user and sets a JWT token as an HTTP-only cookie.
 
 **Response:**
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NzA5OTY0MCwiZXhwIjoxNzQ3MTAzMjQwfQ.x0yiUqb4QinGd7dNpHzAWl5kycRiycQDz8mhITIw3HM"
+	"message": "Logowanie udane"
+}
+```
+
+**Status:** `200 OK`
+
+**Cookie:** `jwt` (HTTP-only) containing the JWT token
+
+#### Logout
+
+```http
+POST /api/auth/logout
+```
+
+Logs out the user by clearing the JWT cookie.
+
+**Response:**
+
+```json
+{
+	"message": "Wylogowano pomyślnie"
 }
 ```
 
@@ -51,14 +69,14 @@ Returns a list of user basic information such as username and email.
 
 ```json
 [
-  {
-    "username": "admin",
-    "email": "admin@gmail.com"
-  },
-  {
-    "username": "exampleUser",
-    "email": "example@example.com"
-  }
+	{
+		"username": "admin",
+		"email": "admin@gmail.com"
+	},
+	{
+		"username": "exampleUser",
+		"email": "example@example.com"
+	}
 ]
 ```
 
@@ -76,10 +94,10 @@ POST /api/users
 
 ```json
 {
-  "username": "exampleUser",
-  "password": "examplePassword",
-  "email": "example@example.com",
-  "roles": "USER"
+	"username": "exampleUser",
+	"password": "examplePassword",
+	"email": "example@example.com",
+	"roles": "USER"
 }
 ```
 
@@ -99,9 +117,9 @@ DELETE /api/users/{id}
 
 **Must be logged in as an Admin**
 
-| Path Variable | Type   | Description                |
-|---------------|--------|----------------------------|
-| `id`          | `Long` | **Required**. User ID      |
+| Path Variable | Type   | Description           |
+| ------------- | ------ | --------------------- |
+| `id`          | `Long` | **Required**. User ID |
 
 Deletes a user account.
 
@@ -119,9 +137,9 @@ PUT /api/users/{id}
 
 **Must be logged in as an Admin**
 
-| Path Variable | Type   | Description                |
-|---------------|--------|----------------------------|
-| `id`          | `Long` | **Required**. User ID      |
+| Path Variable | Type   | Description           |
+| ------------- | ------ | --------------------- |
+| `id`          | `Long` | **Required**. User ID |
 
 Edits a user account.
 
@@ -143,16 +161,16 @@ Returns a list of the current user's collections with basic information such as 
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "exampleCollection",
-    "description": "example description"
-  },
-  {
-    "id": 2,
-    "name": "exampleCollection2",
-    "description": "example description 2"
-  }
+	{
+		"id": 1,
+		"name": "exampleCollection",
+		"description": "example description"
+	},
+	{
+		"id": 2,
+		"name": "exampleCollection2",
+		"description": "example description 2"
+	}
 ]
 ```
 
@@ -172,8 +190,8 @@ POST /api/collections
 
 ```json
 {
-  "name": "exampleCollection",
-  "description": "example description"
+	"name": "exampleCollection",
+	"description": "example description"
 }
 ```
 
@@ -183,7 +201,7 @@ Creates a new collection for the current user.
 
 ```json
 {
-  "id": 1
+	"id": 1
 }
 ```
 
@@ -207,23 +225,23 @@ Returns a list of all items for the current user with basic information such as 
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "exampleItem",
-    "description": "example description",
-    "categoryName": "exampleCategory",
-    "attributes": {
-      "key1": "value1",
-      "key2": "value2"
-    }
-  },
-  {
-    "id": 2,
-    "name": "exampleItem2",
-    "description": "example description 2",
-    "categoryName": null,
-    "attributes": null
-  }
+	{
+		"id": 1,
+		"name": "exampleItem",
+		"description": "example description",
+		"categoryName": "exampleCategory",
+		"attributes": {
+			"key1": "value1",
+			"key2": "value2"
+		}
+	},
+	{
+		"id": 2,
+		"name": "exampleItem2",
+		"description": "example description 2",
+		"categoryName": null,
+		"attributes": null
+	}
 ]
 ```
 
@@ -243,14 +261,14 @@ POST /api/items
 
 ```json
 {
-  "name": "exampleItem",
-  "description": "example description",
-  "categoryId": 1,
-  "collectionId": 1,
-  "attributes": {
-    "key1": "value1",
-    "key2": "value2"
-  }
+	"name": "exampleItem",
+	"description": "example description",
+	"categoryId": 1,
+	"collectionId": 1,
+	"attributes": {
+		"key1": "value1",
+		"key2": "value2"
+	}
 }
 ```
 
@@ -260,7 +278,7 @@ Creates a new item for the current user.
 
 ```json
 {
-  "id": 1
+	"id": 1
 }
 ```
 
@@ -277,7 +295,7 @@ DELETE /api/items/{id}
 **JWT Token Authentication is Required**
 
 | Path Variable | Type   | Description           |
-|---------------|--------|-----------------------|
+| ------------- | ------ | --------------------- |
 | `id`          | `Long` | **Required**. Item ID |
 
 Deletes an item by its ID.
@@ -295,21 +313,21 @@ PUT /api/items/{id}
 **JWT Token Authentication is Required**
 
 | Path Variable | Type   | Description           |
-|---------------|--------|-----------------------|
+| ------------- | ------ | --------------------- |
 | `id`          | `Long` | **Required**. Item ID |
 
 **Request Body:**
 
 ```json
 {
-  "name": "updatedItem",
-  "description": "updated description",
-  "categoryId": 2,
-  "collectionId": 1,
-  "attributes": {
-    "key1": "newValue1",
-    "key3": "value3"
-  }
+	"name": "updatedItem",
+	"description": "updated description",
+	"categoryId": 2,
+	"collectionId": 1,
+	"attributes": {
+		"key1": "newValue1",
+		"key3": "value3"
+	}
 }
 ```
 
@@ -333,18 +351,18 @@ Returns a list of all categories for the current user with basic information suc
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "exampleCategory",
-    "username": "exampleUser",
-    "attributes": ["attribute1", "attribute2"]
-  },
-  {
-    "id": 2,
-    "name": "exampleCategory2",
-    "username": "exampleUser",
-    "attributes": null
-  }
+	{
+		"id": 1,
+		"name": "exampleCategory",
+		"username": "exampleUser",
+		"attributes": ["attribute1", "attribute2"]
+	},
+	{
+		"id": 2,
+		"name": "exampleCategory2",
+		"username": "exampleUser",
+		"attributes": null
+	}
 ]
 ```
 
@@ -364,8 +382,8 @@ POST /api/categories
 
 ```json
 {
-  "name": "exampleCategory",
-  "attributes": ["attribute1", "attribute2"]
+	"name": "exampleCategory",
+	"attributes": ["attribute1", "attribute2"]
 }
 ```
 
@@ -375,7 +393,7 @@ Creates a new category for the current user.
 
 ```json
 {
-  "id": 1
+	"id": 1
 }
 ```
 
@@ -391,9 +409,9 @@ DELETE /api/categories/{id}
 
 **JWT Token Authentication is Required**
 
-| Path Variable | Type   | Description                |
-|---------------|--------|----------------------------|
-| `id`          | `Long` | **Required**. Category ID  |
+| Path Variable | Type   | Description               |
+| ------------- | ------ | ------------------------- |
+| `id`          | `Long` | **Required**. Category ID |
 
 Deletes a category by its ID.
 
@@ -409,16 +427,16 @@ PUT /api/categories/{id}
 
 **JWT Token Authentication is Required**
 
-| Path Variable | Type   | Description                |
-|---------------|--------|----------------------------|
-| `id`          | `Long` | **Required**. Category ID  |
+| Path Variable | Type   | Description               |
+| ------------- | ------ | ------------------------- |
+| `id`          | `Long` | **Required**. Category ID |
 
 **Request Body:**
 
 ```json
 {
-  "name": "updatedCategory",
-  "attributes": ["updatedAttribute1", "updatedAttribute2"]
+	"name": "updatedCategory",
+	"attributes": ["updatedAttribute1", "updatedAttribute2"]
 }
 ```
 
@@ -440,17 +458,17 @@ Sends an email to the specified recipient with the given subject and text.
 
 **Request Parameters:**
 
-| Parameter | Type     | Description                  |
-|-----------|----------|------------------------------|
+| Parameter | Type     | Description                           |
+| --------- | -------- | ------------------------------------- |
 | `to`      | `string` | **Required**. Recipient email address |
-| `subject` | `string` | **Required**. Email subject  |
-| `text`    | `string` | **Required**. Email content  |
+| `subject` | `string` | **Required**. Email subject           |
+| `text`    | `string` | **Required**. Email content           |
 
 **Response:**
 
 ```json
 {
-  "message": "Email sent successfully to example@example.com"
+	"message": "Email sent successfully to example@example.com"
 }
 ```
 
@@ -472,14 +490,14 @@ Returns a list of all friends for the current user with basic information such a
 
 ```json
 [
-  {
-    "friendUsername": "exampleFriend",
-    "friendEmail": "friend@example.com"
-  },
-  {
-    "friendUsername": "exampleFriend2",
-    "friendEmail": "friend2@example.com"
-  }
+	{
+		"friendUsername": "exampleFriend",
+		"friendEmail": "friend@example.com"
+	},
+	{
+		"friendUsername": "exampleFriend2",
+		"friendEmail": "friend2@example.com"
+	}
 ]
 ```
 
@@ -496,7 +514,7 @@ POST /api/friends/invite/{username}
 **JWT Token Authentication is Required**
 
 | Path Variable | Type     | Description                     |
-|---------------|----------|---------------------------------|
+| ------------- | -------- | ------------------------------- |
 | `username`    | `String` | **Required**. Friend's username |
 
 Sends a friend request to the specified user.
@@ -505,7 +523,7 @@ Sends a friend request to the specified user.
 
 ```json
 {
-  "message": "Friend request sent successfully to exampleFriend"
+	"message": "Friend request sent successfully to exampleFriend"
 }
 ```
 
@@ -519,9 +537,9 @@ Sends a friend request to the specified user.
 GET /api/friends/confirm/{invitationId}
 ```
 
-| Path Variable    | Type   | Description                     |
-|------------------|--------|---------------------------------|
-| `invitationId`   | `Long` | **Required**. Invitation ID     |
+| Path Variable  | Type   | Description                 |
+| -------------- | ------ | --------------------------- |
+| `invitationId` | `Long` | **Required**. Invitation ID |
 
 Confirms a pending friend request.
 
@@ -537,9 +555,9 @@ POST /api/friends/reject/{invitationId}
 
 **JWT Token Authentication is Required**
 
-| Path Variable    | Type   | Description                     |
-|------------------|--------|---------------------------------|
-| `invitationId`   | `Long` | **Required**. Invitation ID     |
+| Path Variable  | Type   | Description                 |
+| -------------- | ------ | --------------------------- |
+| `invitationId` | `Long` | **Required**. Invitation ID |
 
 Rejects a pending friend request.
 
@@ -556,7 +574,7 @@ GET /api/friends/collections/{username}
 **JWT Token Authentication is Required**
 
 | Path Variable | Type     | Description                     |
-|---------------|----------|---------------------------------|
+| ------------- | -------- | ------------------------------- |
 | `username`    | `String` | **Required**. Friend's username |
 
 Returns a list of all collections belonging to the specified friend.
@@ -565,16 +583,16 @@ Returns a list of all collections belonging to the specified friend.
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "exampleCollection",
-    "description": "example description"
-  },
-  {
-    "id": 2,
-    "name": "exampleCollection2",
-    "description": "example description 2"
-  }
+	{
+		"id": 1,
+		"name": "exampleCollection",
+		"description": "example description"
+	},
+	{
+		"id": 2,
+		"name": "exampleCollection2",
+		"description": "example description 2"
+	}
 ]
 ```
 
