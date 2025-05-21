@@ -29,10 +29,11 @@ class SecurityConfig {
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java) // Dodanie filtra JWT
-            //  Enable CSRF with token in cookies, but disable for login endpoints
-            .csrf { csrf -> 
+            //  Disable CSRF with token in cookies
+            .csrf { csrf ->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringRequestMatchers("/api/auth/login", "/api/auth/logout")
+//                    .ignoringRequestMatchers("/api/**")
+                    .disable()
             }
         return http.build()
     }
