@@ -32,7 +32,7 @@ class SecurityConfig {
             //  Enable CSRF with token in cookies, but disable for login endpoints
             .csrf { csrf -> 
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringRequestMatchers("/api/auth/login", "/api/auth/logout")
+                      .disable()
             }
         return http.build()
     }
