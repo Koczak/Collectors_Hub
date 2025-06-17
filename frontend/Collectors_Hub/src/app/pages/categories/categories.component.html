@@ -1,0 +1,245 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Page header -->
+  <div class="bg-white shadow">
+    <div class="px-4 sm:px-6 lg:max-w-7xl lg:mx-auto lg:px-8">
+      <div class="py-6 md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+          <h1
+            class="text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate"
+          >
+            My Categories
+          </h1>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+          <button
+            type="button"
+            (click)="openAddModal()"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Add Category
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div *ngIf="categories$ | async as categories; else loading">
+        <div
+          *ngIf="categories.length > 0; else noCategories"
+          class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          <div
+            *ngFor="let category of categories"
+            class="relative group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+          >
+            <!-- Color accent bar at top -->
+            <div
+              class="h-2 bg-gradient-to-r from-emerald-400 to-teal-500"
+            ></div>
+
+            <div class="p-6">
+              <!-- Category icon and name -->
+              <div class="flex items-center">
+                <div class="flex-shrink-0 rounded-full p-3 bg-emerald-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 text-emerald-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
+                  </svg>
+                </div>
+                <h3
+                  class="ml-4 text-xl font-bold text-gray-900 group-hover:text-emerald-700 transition-colors"
+                >
+                  {{ category.name }}
+                </h3>
+              </div>
+
+              <!-- Display attributes if available -->
+              <div
+                *ngIf="category.attributes && category.attributes.length > 0"
+                class="mt-4"
+              >
+                <h4 class="text-sm font-medium text-gray-700 mb-2">
+                  Attributes:
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    *ngFor="let attribute of category.attributes"
+                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  >
+                    {{ attribute }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- If no attributes -->
+              <div
+                *ngIf="!category.attributes || category.attributes.length === 0"
+                class="mt-4 py-2"
+              >
+                <p class="text-sm text-gray-500 italic">
+                  No attributes defined
+                </p>
+              </div>
+
+              <!-- Action buttons -->
+              <div
+                class="mt-6 flex justify-end space-x-3 pt-4 border-t border-gray-100"
+              >
+                <button
+                  (click)="openEditModal(category)"
+                  class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  Edit
+                </button>
+                <button
+                  (click)="deleteCategory(category.id)"
+                  class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noCategories>
+          <div class="text-center py-12 bg-white rounded-lg shadow">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-12 w-12 mx-auto text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+            <h3 class="mt-4 text-lg font-medium text-gray-900">
+              No categories yet
+            </h3>
+            <p class="mt-2 text-sm text-gray-500 max-w-md mx-auto">
+              Get started by creating your first category to organize your
+              items.
+            </p>
+            <div class="mt-6">
+              <button
+                type="button"
+                (click)="openAddModal()"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Create First Category
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <ng-template #loading>
+        <div class="flex justify-center items-center py-12">
+          <svg
+            class="animate-spin h-8 w-8 text-emerald-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <span class="ml-3 text-gray-600">Loading categories...</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Add Category Modal -->
+<app-add-category-modal
+  *ngIf="isAddModalOpen()"
+  (close)="closeAddModal()"
+  (categoryCreated)="onCategoryCreated()"
+></app-add-category-modal>
+
+<!-- Edit Category Modal -->
+<app-edit-category-modal
+  *ngIf="isEditModalOpen() && selectedCategory()"
+  [category]="selectedCategory()!"
+  (close)="closeEditModal()"
+  (categoryUpdated)="onCategoryUpdated()"
+></app-edit-category-modal>

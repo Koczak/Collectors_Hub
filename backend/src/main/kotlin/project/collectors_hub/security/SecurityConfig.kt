@@ -13,6 +13,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.http.HttpMethod
 
 @Configuration
 class SecurityConfig {
@@ -23,25 +24,31 @@ class SecurityConfig {
             .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
             .authorizeHttpRequests { requests ->
                 requests
-                    .requestMatchers("/api/auth/login", "/api/auth/logout", "/public/**", "/api/friends/confirm/**").permitAll() // Publiczne endpointy
+                    .requestMatchers("/api/auth/login", "/api/auth/logout", "/api/auth/status", "/public/**", "/api/friends/confirm/**").permitAll() // Publiczne endpointy
                     .requestMatchers("/api/users").permitAll()
                     .requestMatchers("/api/**").authenticated() // Endpointy wymagające uwierzytelnienia
-                    .anyRequest().authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/friends").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/friends/pending").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/friends/invite/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/friends/confirm/**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/friends/reject/**").authenticated()
+                    .requestMatchers(HttpMethod.DELETE, "/api/friends/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/friends/collections/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/comments/item/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/comments/collection/**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/comments").authenticated()
+                    .requestMatchers(HttpMethod.DELETE, "/api/comments/**").authenticated()
+                    .anyRequest().permitAll()
             }
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java) // Dodanie filtra JWT
-            //  Disable CSRF with token in cookies
-            .csrf { csrf ->
-                csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                    .ignoringRequestMatchers("/api/**")
-                    .disable()
-            }
+            .csrf { csrf -> csrf.disable() }
         return http.build()
     }
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:5173") 
+        configuration.allowedOrigins = listOf("http://localhost:4200") 
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true

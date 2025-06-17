@@ -8,11 +8,14 @@ import project.collectors_hub.projection.CollectionProjection
 import project.collectors_hub.entity.Collection
 import project.collectors_hub.repository.CollectionRepository
 import project.collectors_hub.security.SecurityUtils
+import project.collectors_hub.projection.ItemProjection
+import project.collectors_hub.repository.ItemRepository
 
 @Service
 class CollectionServiceImpl(
     private val collectionRepository: CollectionRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val itemRepository: ItemRepository
 ) : CollectionService {
 
     override fun getAllCollectionsForCurrentUser(): List<CollectionProjection> {
@@ -54,6 +57,13 @@ class CollectionServiceImpl(
 
     override fun findCollectionById(id: Long): Collection? {
         return collectionRepository.findById(id).orElse(null)
+    }
+
+    override fun getItemsFromCollection(collectionId: Long): List<ItemProjection> {
+        val collection = findCollectionById(collectionId) ?: throw EntityNotFoundException("Collection with id $collectionId not found")
+        
+        // Weryfikacja uprawnień jest obsługiwana przez metody wywołujące tę funkcję
+        return itemRepository.findAllItemsWithCategoryForGivenCollectionId(collectionId)
     }
 
 }

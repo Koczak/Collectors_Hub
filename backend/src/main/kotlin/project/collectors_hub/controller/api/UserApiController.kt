@@ -19,6 +19,18 @@ class UserApiController(
         return ResponseEntity(userService.getAllUsers(), HttpStatus.OK)
     }
 
+    @GetMapping("/profile")
+    fun getCurrentUserProfile(): ResponseEntity<UserProjection> {
+        val currentUser = userService.getCurrentUser().orElseThrow { RuntimeException("User not found") }
+        // Tworzymy obiekt UserProjection na podstawie obiektu User
+        val userProjection = object : UserProjection {
+            override fun getUsername(): String = currentUser.username
+            override fun getEmail(): String = currentUser.email
+            override fun getRoles(): String = currentUser.roles
+        }
+        return ResponseEntity(userProjection, HttpStatus.OK)
+    }
+
     @PostMapping
     fun createUser(@RequestBody dto: UserDto): ResponseEntity<Unit> {
         userService.createUser(dto)

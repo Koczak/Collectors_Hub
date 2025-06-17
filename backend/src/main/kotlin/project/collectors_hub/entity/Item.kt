@@ -24,5 +24,8 @@ data class Item(
     @Column(nullable = true)
     @Convert(converter = MapStringAnyJsonAttributeConverter::class)
     var attributes: Map<String, Any>?,
+    
+    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val comments: MutableList<Comment> = mutableListOf()
 
 ) : BaseEntity()

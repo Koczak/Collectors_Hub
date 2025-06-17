@@ -1,0 +1,81 @@
+<div
+  class="fixed inset-0 backdrop-blur-sm bg-gray-900/30 overflow-y-auto h-full w-full z-50"
+  (click)="close.emit()"
+>
+  <div
+    class="relative top-20 mx-auto p-6 w-96 shadow-xl rounded-lg bg-white"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="mt-2">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold text-gray-900">Create New Collection</h3>
+        <button
+          (click)="close.emit()"
+          class="text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+      <form
+        [formGroup]="collectionForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-4"
+      >
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Collection name"
+          />
+        </div>
+        <div>
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Describe your collection"
+          ></textarea>
+        </div>
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            type="button"
+            (click)="close.emit()"
+            class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="collectionForm.invalid || isSubmitting()"
+            class="inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ isSubmitting() ? "Creating..." : "Create Collection" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

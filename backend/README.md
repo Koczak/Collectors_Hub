@@ -505,6 +505,37 @@ Returns a list of all friends for the current user with basic information such a
 
 ---
 
+#### Get Pending Friend Requests
+
+```http
+GET /api/friends/pending
+```
+
+**JWT Token Authentication is Required**
+
+Returns a list of pending friend requests that have been sent to the current user.
+
+**Response:**
+
+```json
+[
+	{
+		"id": 1,
+		"senderUsername": "exampleUser",
+		"senderEmail": "user@example.com"
+	},
+	{
+		"id": 2,
+		"senderUsername": "anotherUser",
+		"senderEmail": "another@example.com"
+	}
+]
+```
+
+**Status:** `200 OK`
+
+---
+
 #### Send Friend Request
 
 ```http
@@ -565,6 +596,24 @@ Rejects a pending friend request.
 
 ---
 
+#### Remove Friend
+
+```http
+DELETE /api/friends/{username}
+```
+
+**JWT Token Authentication is Required**
+
+| Path Variable | Type     | Description                     |
+| ------------- | -------- | ------------------------------- |
+| `username`    | `String` | **Required**. Friend's username |
+
+Removes a friend from your friend list.
+
+**Status:** `204 No Content`
+
+---
+
 #### Get All Collections of a Friend
 
 ```http
@@ -597,3 +646,128 @@ Returns a list of all collections belonging to the specified friend.
 ```
 
 **Status:** `200 OK`
+
+### Comments
+
+#### Get All Comments for an Item
+
+```http
+GET /api/comments/item/{itemId}
+```
+
+**JWT Token Authentication is Required**
+
+| Path Variable | Type   | Description           |
+| ------------- | ------ | --------------------- |
+| `itemId`      | `Long` | **Required**. Item ID |
+
+Returns a list of all comments for the specified item.
+
+**Response:**
+
+```json
+[
+	{
+		"id": 1,
+		"content": "This is a great item!",
+		"createdAt": "2023-05-20T15:32:45",
+		"username": "exampleUser",
+		"userId": 2
+	},
+	{
+		"id": 2,
+		"content": "I love this collection piece!",
+		"createdAt": "2023-05-21T10:15:22",
+		"username": "anotherUser",
+		"userId": 3
+	}
+]
+```
+
+**Status:** `200 OK`
+
+---
+
+#### Get All Comments for a Collection
+
+```http
+GET /api/comments/collection/{collectionId}
+```
+
+**JWT Token Authentication is Required**
+
+| Path Variable  | Type   | Description                 |
+| -------------- | ------ | --------------------------- |
+| `collectionId` | `Long` | **Required**. Collection ID |
+
+Returns a list of all comments for all items in the specified collection.
+
+**Response:**
+
+```json
+[
+	{
+		"id": 1,
+		"content": "This is a great item!",
+		"createdAt": "2023-05-20T15:32:45",
+		"username": "exampleUser",
+		"userId": 2
+	},
+	{
+		"id": 2,
+		"content": "I love this collection piece!",
+		"createdAt": "2023-05-21T10:15:22",
+		"username": "anotherUser",
+		"userId": 3
+	}
+]
+```
+
+**Status:** `200 OK`
+
+---
+
+#### Add a Comment
+
+```http
+POST /api/comments
+```
+
+**JWT Token Authentication is Required**
+
+**Request Body:**
+
+```json
+{
+	"content": "This is a great item!",
+	"itemId": 1
+}
+```
+
+Adds a new comment to the specified item.
+
+**Response:**
+
+```json
+1
+```
+
+**Status:** `201 Created`
+
+---
+
+#### Delete a Comment
+
+```http
+DELETE /api/comments/{commentId}
+```
+
+**JWT Token Authentication is Required**
+
+| Path Variable | Type   | Description              |
+| ------------- | ------ | ------------------------ |
+| `commentId`   | `Long` | **Required**. Comment ID |
+
+Deletes the specified comment. Only the comment author can delete their comments.
+
+**Status:** `204 No Content`

@@ -1,0 +1,176 @@
+<!-- Modal backdrop -->
+<div
+  class="fixed inset-0 backdrop-blur-sm bg-gray-900/30 overflow-y-auto h-full w-full z-50"
+  (click)="close.emit()"
+>
+  <div
+    class="relative top-20 mx-auto p-6 w-96 shadow-xl rounded-lg bg-white"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="mt-2">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold text-gray-900">Add New Item</h3>
+        <button
+          (click)="close.emit()"
+          class="text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Name field -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Item name"
+          />
+          <p
+            *ngIf="itemForm.get('name')?.errors?.['required'] && itemForm.get('name')?.touched"
+            class="mt-2 text-sm text-red-600"
+          >
+            Name is required
+          </p>
+        </div>
+
+        <!-- Description field -->
+        <div>
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Item description"
+          ></textarea>
+          <p
+            *ngIf="itemForm.get('description')?.errors?.['required'] && itemForm.get('description')?.touched"
+            class="mt-2 text-sm text-red-600"
+          >
+            Description is required
+          </p>
+        </div>
+
+        <!-- Category field -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700"
+            >Category (Optional)</label
+          >
+          <div *ngIf="isLoading()" class="flex items-center mt-1">
+            <svg
+              class="animate-spin h-5 w-5 text-indigo-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span class="ml-2 text-sm text-gray-500"
+              >Loading categories...</span
+            >
+          </div>
+          <select
+            *ngIf="!isLoading()"
+            id="category"
+            formControlName="categoryId"
+            (change)="onCategoryChange()"
+            class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="-1">No Category</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div
+            *ngIf="!isLoading() && categories.length === 0"
+            class="mt-1 text-sm text-gray-500"
+          >
+            No categories available.
+            <a
+              routerLink="/categories"
+              class="text-indigo-600 hover:text-indigo-800"
+              >Create a category</a
+            >
+            first.
+          </div>
+        </div>
+
+        <!-- Dynamic attributes based on selected category -->
+        <div
+          *ngIf="selectedCategoryAttributes.length > 0"
+          formGroupName="attributes"
+          class="space-y-3"
+        >
+          <h4 class="text-sm font-medium text-gray-700">Category Attributes</h4>
+          <div
+            *ngFor="let attr of selectedCategoryAttributes"
+            class="grid grid-cols-1"
+          >
+            <label
+              [for]="attr"
+              class="block text-xs font-medium text-gray-500"
+              >{{ attr }}</label
+            >
+            <input
+              [id]="attr"
+              [formControlName]="attr"
+              class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              [placeholder]="'Enter ' + attr"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            type="button"
+            (click)="close.emit()"
+            class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="!itemForm.valid || isSubmitting()"
+            class="inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ isSubmitting() ? "Adding..." : "Add Item" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

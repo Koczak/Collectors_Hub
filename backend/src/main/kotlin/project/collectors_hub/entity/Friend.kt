@@ -15,9 +15,14 @@ data class Friend(
     val friend: User,
 
     @Column(nullable = false)
-    var status: String = STATUS_PENDING
+    @Enumerated(EnumType.STRING)
+    var status: FriendStatus = FriendStatus.PENDING
 
 ) : BaseEntity() {
+    enum class FriendStatus {
+        PENDING, ACCEPTED, REJECTED
+    }
+    
     companion object {
         const val STATUS_PENDING = "PENDING"
         const val STATUS_ACCEPTED = "ACCEPTED"

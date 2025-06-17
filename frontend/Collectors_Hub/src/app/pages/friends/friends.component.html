@@ -1,0 +1,438 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Page header -->
+  <div class="bg-white shadow">
+    <div class="px-4 sm:px-6 lg:max-w-7xl lg:mx-auto lg:px-8">
+      <div class="py-6 md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+          <h1
+            class="text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate"
+          >
+            Friends
+          </h1>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+          <button
+            type="button"
+            (click)="toggleInviteForm()"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              *ngIf="!showInviteForm()"
+            >
+              <path
+                d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+              />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              *ngIf="showInviteForm()"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ showInviteForm() ? "Cancel" : "Add Friend" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Success message -->
+      @if (success()) {
+      <div
+        class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-md shadow-sm"
+      >
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg
+              class="h-5 w-5 text-green-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700">{{ success() }}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Error message -->
+      @if (error()) {
+      <div
+        class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-md shadow-sm"
+      >
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg
+              class="h-5 w-5 text-red-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-red-700">{{ error() }}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Pending friend requests -->
+      @if (pendingRequests().length > 0) {
+      <div
+        class="bg-white shadow-md rounded-xl overflow-hidden mb-8 border border-gray-100"
+      >
+        <div class="h-2 bg-gradient-to-r from-amber-400 to-orange-500"></div>
+        <div class="px-6 py-5 border-b border-gray-100">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 rounded-full p-2 bg-amber-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-amber-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-900">
+              Pending Friend Requests
+            </h3>
+          </div>
+          <p class="mt-1 pl-11 text-sm text-gray-500">
+            Accept or reject friend requests from other users
+          </p>
+        </div>
+        <ul class="divide-y divide-gray-100">
+          @for (request of pendingRequests(); track request.id) {
+          <li class="hover:bg-gray-50 transition-colors">
+            <div class="px-6 py-5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="h-12 w-12 rounded-full bg-gradient-to-r from-amber-500 to-amber-300 flex items-center justify-center text-white shadow-sm"
+                    >
+                      <span class="font-bold text-lg">{{
+                        request.senderUsername.charAt(0).toUpperCase()
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                      {{ request.senderUsername }}
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      {{ request.senderEmail }}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex space-x-3">
+                  <button
+                    (click)="confirmRequest(request.id)"
+                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Accept
+                  </button>
+                  <button
+                    (click)="rejectRequest(request.id)"
+                    class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+          }
+        </ul>
+      </div>
+      }
+
+      <!-- Invite form -->
+      @if (showInviteForm()) {
+      <div
+        class="bg-white shadow-md rounded-xl overflow-hidden mb-8 border border-gray-100"
+      >
+        <div class="h-2 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+        <div class="px-6 py-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 rounded-full p-3 bg-blue-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-blue-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                />
+              </svg>
+            </div>
+            <h3 class="ml-4 text-xl font-bold text-gray-900">
+              Add a new friend
+            </h3>
+          </div>
+          <div class="mt-4 max-w-xl text-sm text-gray-500">
+            <p>Enter the username of the person you want to add as a friend.</p>
+          </div>
+          <form [formGroup]="inviteForm" (ngSubmit)="sendInvite()" class="mt-5">
+            <div class="sm:flex sm:items-center">
+              <div class="w-full sm:max-w-xs">
+                <label for="username" class="sr-only">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  formControlName="username"
+                  class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  placeholder="Username"
+                />
+              </div>
+              <button
+                type="submit"
+                [disabled]="inviteForm.invalid || isLoading()"
+                class="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+                  />
+                </svg>
+                Send Invitation
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      }
+
+      <!-- Friends list -->
+      @if (isLoading()) {
+      <div class="flex justify-center items-center py-12">
+        <svg
+          class="animate-spin h-8 w-8 text-indigo-600"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <span class="ml-3 text-gray-600">Loading friends...</span>
+      </div>
+      } @else { @if (friends().length === 0) {
+      <div class="text-center py-12 bg-white rounded-xl shadow">
+        <svg
+          class="mx-auto h-16 w-16 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900">No friends yet</h3>
+        <p class="mt-2 text-sm text-gray-500 max-w-md mx-auto">
+          Connect with other collectors by adding them as friends to view their
+          collections.
+        </p>
+        <div class="mt-6">
+          <button
+            type="button"
+            (click)="toggleInviteForm()"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+              />
+            </svg>
+            Add Friend
+          </button>
+        </div>
+      </div>
+      } @else {
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        @for (friend of friends(); track friend.friendUsername) {
+        <div
+          class="relative group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+        >
+          <!-- Color accent bar at top -->
+          <div class="h-2 bg-gradient-to-r from-purple-400 to-indigo-500"></div>
+
+          <div class="p-6">
+            <!-- Friend info -->
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <div
+                  class="h-14 w-14 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-sm"
+                >
+                  <span class="font-bold text-xl">{{
+                    friend.friendUsername.charAt(0).toUpperCase()
+                  }}</span>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-bold text-gray-900">
+                  {{ friend.friendUsername }}
+                </h3>
+                <div class="text-sm text-gray-500">
+                  {{ friend.friendEmail }}
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center"
+            >
+              <a
+                [routerLink]="[
+                  '/friends',
+                  friend.friendUsername,
+                  'collections'
+                ]"
+                class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                View Collections
+              </a>
+              <button
+                (click)="removeFriend(friend.friendUsername)"
+                class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-4 4m0 0l-4-4m4 4V3"
+                  />
+                </svg>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      } }
+    </div>
+  </div>
+</div>
